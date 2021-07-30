@@ -4,11 +4,10 @@ A simple demo shows the MutationSummary + TreeMirror libs to de/serialize conten
 
 We also try to catch & propagate two events - scroll + click.
 
-<video controls allowfullscreen poster="https://raw.githubusercontent.com/parallelo3301/dom-cloner-demo/master/assets/demo.jpg">
-<source src="https://raw.githubusercontent.com/parallelo3301/dom-cloner-demo/master/assets/demo.mp4" type="video/mp4">
-</video>
+![](https://raw.githubusercontent.com/parallelo3301/dom-cloner-demo/master/assets/demo.jpg)
 
 ---
+
 
 ## Demo/notes
 
@@ -16,6 +15,7 @@ We also try to catch & propagate two events - scroll + click.
 - `scroll` event on any tag
 - `iframe` (chat box handling, ...)
 - differences in a font or OS UI elements rendering
+
 
 ## Usage
 
@@ -29,3 +29,8 @@ Open:
 - [http://localhost:3000/clone.html](http://localhost:3000/clone.html) in the second tab
 
 Observe mirrored page (origin) in the cloned one.
+
+
+## Demo video
+
+https://raw.githubusercontent.com/parallelo3301/dom-cloner-demo/master/assets/demo.mp4
