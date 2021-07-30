@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<head>
+	<title>Clone</title>
+</head>
+
+<body>
+
+<script src="/node_modules/socket.io/client-dist/socket.io.min.js"></script>
+<script src="/assets/mutation_summary.js"></script>
+<script src="/assets/tree_mirror.js"></script>
+<script>
+	function clearDOM () {
+		while (document.firstChild) {
+			document.removeChild(document.firstChild)
+		}
+	}
+
+	function createTreeMirror (base) {
+		return new TreeMirror(document, {
+			createElement (tagName) {
+				if (tagName === 'SCRIPT') {
+					const node = document.createElement('NO-SCRIPT')
+					node.style.display = 'none'
+					return node
+				}
+
+				if (tagName === 'HEAD') {
+					const node = document.createElement('HEAD')
+					node.appendChild(document.createElement('BASE'))
+					node.firstChild.href = base
+					return node
+				}
+			}
+		})
+	}
+
+	window.addEventListener('DOMContentLoaded', () => {
+		clearDOM()
+
+		const socket = io()
+		
+		let base
+		let mirror = createTreeMirror(base)
+
+		socket.on('cloned summary', (msgs) => {
+			msgs.forEach((msg) => {
+				console.log(msg)
+				if (msg.f === 'initialize') {
+					clearDOM()
+					delete mirror
+					mirror = createTreeMirror(base)
+				}
+
+				if (msg.base) {
+					base = msg.base
+				} else {
+					mirror[msg.f].apply(mirror, msg.args)
+				}
+			})
+		})
+
+		socket.on('cloned events', (msgs) => {
+			msgs.forEach((msg) => {
+				console.log(msg)
+
+				if (msg.e === 'click') {
+					const el = document.createElement('DIV')
+					el.style.cssText = `
+						position: absolute;
+						left: ${msg.x - 5}px;
+						top: ${msg.y + msg.yOffset - 5}px;
+						width: 10px;
+						height: 10px;
+						background-color: red;
+						border-radius: 5px;
+					`
+					document.body.appendChild(el)
+
+					setTimeout(() => { el.remove() }, 3000)
+				} else if (msg.e === 'scroll') {
+					window.scrollTo(0, msg.top)
+				}
+			})
+		})
+
+	})
+</script>
+</body>
+</html>

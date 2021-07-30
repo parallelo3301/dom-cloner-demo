@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>Origin</title>
+	<style>
+		.box { max-width: 600px; padding: 20px; outline: 1px dashed black; }
+		button { appearance: none; padding: 5px; }
+		ul li { margin-top: 5px; }
+		.counter { display: block; padding: 10px; font-size: 30px; }
+	</style>
+	<!-- <link rel="stylesheet" type="text/css" href="https://parallelo3301.org/style.css"> -->
+	<link rel="stylesheet" type="text/css" href="assets/test.css">
+</head>
+
+<body>
+<div class="box">
+	<div v-scope="{ count: 0 }">
+		<button @click="count++">Increment counter</button>
+		<div class="counter">{{ count }}</div>
+	</div>
+</div>
+
+<div class="box">
+	<div v-scope="{ items: [] }">
+		<button @click="items.push('hello, petite-vue :-)')">Add new item</button>
+		<ul><li v-for="(item, index) of items">{{ index }}: {{ item }}</li></ul>
+	</div>
+</div>
+
+<div class="box box-2">
+	<div v-scope="{ items: [] }">
+		<h1>Styled from external file</h1>
+		<button @click="items.push('hello, petite-vue.. list n.2 :-)')">Add new item</button>
+		<ul><li v-for="(item, index) of items">{{ index }}: {{ item }}</li></ul>
+	</div>
+</div>
+
+<div class="box" style="margin-top: 500px">
+	<h2>Hello, we try to demonstrate scroll (1). :-)</h2>
+</div>
+
+<div class="box" style="margin-top: 500px">
+	<h2>Hello, we try to demonstrate scroll (2). :-)</h2>
+</div>
+
+<div class="box" style="margin-top: 500px">
+	<h2>Hello, we try to demonstrate scroll (3). :-)</h2>
+</div>
+
+<script src="https://unpkg.com/petite-vue" defer init></script>
+<script src="/node_modules/socket.io/client-dist/socket.io.min.js"></script>
+<script src="/assets/mutation_summary.js"></script>
+<script src="/assets/tree_mirror.js"></script>
+<script>
+	const getTop = () => document.documentElement.scrollTop || document.body.scrollTop
+
+	function init () {
+		const socket = io()
+
+		const mirrorClient = new TreeMirrorClient(document, {
+			initialize (rootId, children) {
+				socket.emit('input summary', {
+					f: 'initialize',
+					args: [rootId, children],
+				})
+			},
+
+			applyChanged (removed, addedOrMoved, attributes, text) {
+				socket.emit('input summary', {
+					f: 'applyChanged',
+					args: [removed, addedOrMoved, attributes, text],
+				})
+			}
+		})
+
+		document.addEventListener('scroll', () => {
+			socket.emit('input events', {
+				e: 'scroll',
+				top: getTop(),
+			})
+		})
+
+		window.addEventListener('click', (e) => {
+			socket.emit('input events', {
+				e: 'click',
+				x: e.clientX,
+				y: e.clientY,
+				yOffset: getTop(),
+			})
+		})
+	}
+
+	window.addEventListener('DOMContentLoaded', () => {
+		setTimeout(init, 2000)
+	})
+</script>
+</body>
+</html>
