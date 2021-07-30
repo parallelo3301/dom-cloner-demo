@@ -4,8 +4,8 @@ A simple demo shows the MutationSummary + TreeMirror libs to de/serialize conten
 
 We also try to catch & propagate two events - scroll + click.
 
-<video controls allowfullscreen poster="assets/demo.jpg">
-<source src="assets/demo.mp4" type="video/mp4">
+<video controls allowfullscreen poster="https://raw.githubusercontent.com/parallelo3301/dom-cloner-demo/master/assets/demo.jpg">
+<source src="https://raw.githubusercontent.com/parallelo3301/dom-cloner-demo/master/assets/demo.mp4" type="video/mp4">
 </video>
 
 ---
