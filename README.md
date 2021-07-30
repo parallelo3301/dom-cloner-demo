@@ -33,4 +33,4 @@ Observe mirrored page (origin) in the cloned one.
 
 ## Demo video
 
-https://raw.githubusercontent.com/parallelo3301/dom-cloner-demo/master/assets/demo.mp4
+https://user-images.githubusercontent.com/3234524/127643815-e1ab6a08-f93f-48d9-845e-d1d4ebf4b076.mp4
